@@ -30,6 +30,13 @@ class Patient extends Contract {
         console.info('============= END : Create Patient Record ===========');
     }
 
+    async bookAnAppointment(ctx, appointmentId, patientId) {
+        const appointment = await ctx.stub.getState(appointmentId);
+        appointment.patientId = patientId;
+        appointment.status = 'BOOKED';
+        await ctx.stub.putState(appointmentId, Buffer.from(JSON.stringify(appointment)));
+    }
+
     async queryAllPatients(ctx) {
         const startKey = '';
         const endKey = '';

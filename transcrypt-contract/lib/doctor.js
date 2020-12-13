@@ -29,6 +29,26 @@ class Doctor extends Contract {
         console.info('============= END : Create Doctor Record ===========');
     }
 
+    async addAvailableAppointments(ctx, doctorId, appointmentDate) {
+        const appointment = {
+            docType = 'appointment',
+            doctorId,
+            patientID = '',
+            appointmentDate,
+            startTime = '',
+            endTime = '',
+            status = 'FREE'
+        };
+        let startTs = [ '0900', '1100', '1300', '1500']
+        let endTs = ['1100', '1300', '1500', '1700']
+
+        for (let a = 0; a < 4; a++) {
+            appointment.startTime = startTs[a];
+            appointment.endTime = endTs[a];
+            await ctx.stub.putState(appointment.doctorId + appointment.appointmentDate + appointment.startTime, Buffer.from(JSON.stringify(appointment)));
+        }
+    }
+
     async queryAllDoctors(ctx) {
         const startKey = '';
         const endKey = '';
