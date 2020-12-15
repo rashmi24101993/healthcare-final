@@ -31,7 +31,8 @@ class Patient extends Contract {
     }
 
     async bookAnAppointment(ctx, appointmentId, patientId) {
-        const appointment = await ctx.stub.getState(appointmentId);
+        const appointmentAsBytes = await ctx.stub.getState(appointmentId);
+        const appointment = JSON.parse(appointmentAsBytes.toString());
         appointment.patientId = patientId;
         appointment.status = 'BOOKED';
         await ctx.stub.putState(appointmentId, Buffer.from(JSON.stringify(appointment)));

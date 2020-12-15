@@ -31,16 +31,16 @@ class Doctor extends Contract {
 
     async addAvailableAppointments(ctx, doctorId, appointmentDate) {
         const appointment = {
-            docType = 'appointment',
+            docType: 'appointment',
             doctorId,
-            patientID = '',
+            patientID: '',
             appointmentDate,
-            startTime = '',
-            endTime = '',
-            status = 'FREE'
+            startTime: '',
+            endTime: '',
+            status: 'FREE'
         };
-        let startTs = [ '0900', '1100', '1300', '1500']
-        let endTs = ['1100', '1300', '1500', '1700']
+        let startTs = [ '0900', '1100', '1300', '1500'];
+        let endTs = ['1100', '1300', '1500', '1700'];
 
         for (let a = 0; a < 4; a++) {
             appointment.startTime = startTs[a];
