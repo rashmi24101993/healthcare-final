@@ -4,40 +4,44 @@ const { Contract } = require('fabric-contract-api');
 
 class Doctor extends Contract {
     
-    async queryDegreeRecord(ctx, licenseId) {
+    async queryDoctorRecord(ctx, aadharNumberD) {
         // get the doctors data from chaincode state
-        const licenseAsBytes = await ctx.stub.getState(licenseId); 
-        if (!liceneAsBytes || licenseAsBytes.length === 0) {
-            throw new Error(`${licenseId} does not exist`);
+        const licenseAsBytes = await ctx.stub.getState(aadharNumberD); 
+        if (!licenseAsBytes || licenseAsBytes.length === 0) {
+            throw new Error(`${aadharNumberD} does not exist`);
         }
         console.log(licenseAsBytes.toString());
         return licenseAsBytes.toString();
     }
 
-    async createDoctorRecord(ctx, licenseId, doctorName, specialization, aadharNumber,contactNumber) {
+    async createDoctorRecord(ctx, licenseId, passwordd, doctorName, emailD, specialization, aadharNumberD,contactNumber) {
         console.info('============= START : Create Doctors Record ===========');
 
         const doctor = {
             docType: 'doctor',
+            licenseId,
             doctorName,
+            emailD,
+            passwordd,
             specialization,
-            aadharNumber,
+            aadharNumberD,
             contactNumber,
+            walletBalance: 0,
         };
 
-        await ctx.stub.putState(licenseId, Buffer.from(JSON.stringify(doctor)));
+        await ctx.stub.putState(aadharNumberD, Buffer.from(JSON.stringify(doctor)));
         console.info('============= END : Create Doctor Record ===========');
     }
 
-    async addAvailableAppointments(ctx, doctorId, appointmentDate) {
+    async addAvailableAppointments(ctx, aadharNumberD, appointmentDate) {
         const appointment = {
             docType: 'appointment',
-            doctorId,
-            patientID: '',
+            aadharNumberD,
+            aadharNumberp: '',
             appointmentDate,
             startTime: '',
             endTime: '',
-            status: 'FREE'
+            status: 'FREE',
         };
         let startTs = [ '0900', '1100', '1300', '1500'];
         let endTs = ['1100', '1300', '1500', '1700'];
@@ -45,8 +49,24 @@ class Doctor extends Contract {
         for (let a = 0; a < 4; a++) {
             appointment.startTime = startTs[a];
             appointment.endTime = endTs[a];
-            await ctx.stub.putState(appointment.doctorId + appointment.appointmentDate + appointment.startTime, Buffer.from(JSON.stringify(appointment)));
+            await ctx.stub.putState(appointment.aadharNumberD + appointment.appointmentDate + appointment.startTime, 
+                                    Buffer.from(JSON.stringify(appointment)));
         }
+    }
+    async generatePrescription(ctx, aadharNumberD, aadharNumberP, appointmentDate, medicinesPrescribed, precautions, other){
+
+         const prescription = {
+            docType: 'prescription',
+            aadharNumberD,
+            aadharNumberP,
+            appointmentDate,
+            medicinesPrescribed,
+            precautions,
+            other,
+        };
+
+        await ctx.stub.putState(prescription.aadharNumberD + prescription.aadharNumberP + prescription.appointmentDate,
+                                Buffer.from(JSON.stringify(prescription)));
     }
 
     async queryAllDoctors(ctx) {

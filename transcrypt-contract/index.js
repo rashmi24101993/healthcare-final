@@ -7,8 +7,8 @@
 'use strict';
 
 const Transcrypt = require('./lib/transcrypt');
-const Doctor = require('./lib/doctor')
-const Patient = require('./lib/patient')
+const Doctor = require('./lib/doctor');
+const Patient = require('./lib/patient');
 
 
 module.exports.Transcrypt = Transcrypt;

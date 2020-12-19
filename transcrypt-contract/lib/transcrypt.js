@@ -8,21 +8,29 @@ class Transcrypt extends Contract {
         console.info('============= START : Initialize Ledger ===========');
         const patients = [
             {
-            	  patientName: 'Rashmi Maheshwari',
+                  aadharNumberP: '123456789',
+                  patientName: 'Rashmi Maheshwari',
+                  emailP: 'rashmi@gmail.com',
+                  passwordp: 'rrrr',
             	  age: '26',
             	  contactNumber: '802206361',
             	  emergencyContact: '9406372036',
             
             },
-            {
-            	  patientName: 'Arundhati Ajaria',
+            {     aadharNumberP: '234567890',
+                  patientName: 'Arundhati Ajaria',
+                  emailP : 'arundhati@gmail.com',
+                  passwordd: 'aaaa',
             	  age: '29',
             	  contactNumber: '802206362',
             	  emergencyContact: '9978564858',
             
             },
             {
-            	  patientName: 'Jai Prakash',
+                  aadharNumberP:'345678901',
+                  patientName: 'Jai Prakash',
+                  emailP: 'jai@gmail.com',
+                  passwordp: 'jjjj',
             	  age: '27',
             	  contactNumber: '8879652135',
             	  emergencyContact: '9406372011',
@@ -31,17 +39,23 @@ class Transcrypt extends Contract {
             
         ];
         const doctors = [
-            {
+            {   
+                licenseId:'123456',
                 doctorName: 'abc',
+                emailD: 'abc@gmail.com',
+                passwordd:'aabbcc',
                 specialization: 'ENT',
-                aadharNumber: '1010101010',
+                aadharNumberD: '1010101010',
                 contactNumber: '8899665522',
 
             },
-            {
+            {   
+                licenseId: '234567',
                 doctorName: 'xyz',
+                emailD: 'xyz@gmail.com', 
+                passwordd:'xxyyzz',
                 specialization: 'Gyno',
-                aadharNumber: '1010256345',
+                aadharNumberD: '1010256345',
                 contactNumber: '9406356231',
 
             },
@@ -49,12 +63,12 @@ class Transcrypt extends Contract {
 
         for (let i = 0; i < patients.length; i++) {
             patients[i].docType = 'patient';
-            await ctx.stub.putState('PATIENT' + i, Buffer.from(JSON.stringify(patients[i])));
+            await ctx.stub.putState(patients[i].aadharNumberP, Buffer.from(JSON.stringify(patients[i])));
             console.info('Added <--> ', patients[i]);
         }
          for (let j = 0; j < doctors.length; j++) {
             doctors[j].docType = 'doctor';
-            await ctx.stub.putState('DOCTOR' + j, Buffer.from(JSON.stringify(doctors[j])));
+            await ctx.stub.putState(doctors[j].aadharNumberD, Buffer.from(JSON.stringify(doctors[j])));
             console.info('Added <--> ', doctors[j]);
         }
 

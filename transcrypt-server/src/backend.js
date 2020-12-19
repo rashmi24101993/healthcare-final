@@ -164,9 +164,12 @@ async function getParameters(socket, user) {
     const network = await gateway.getNetwork('mychannel');
 
     // Get the contract from the network.
-    const contract = network.getContract('transcrypt', 'Doctor');
+    const doctorContract = network.getContract('transcrypt', 'Doctor');
+    const patientContract = network.getContract('transcrypt', 'Patient');
+    const chemistContract= network.getContract('transcrypt','Chemist');
 
-    return { gateway, contract };
+
+    return { gateway, doctorContract, patientContract, chemistContract };
 }
 
 io.on('connection', async (socket) => {
@@ -177,7 +180,7 @@ io.on('connection', async (socket) => {
     });
 
     // enroll user when client connects, default user is appUser
-    let { gateway, contract } = await getParameters(socket, 'appUser');
+    let { gateway, doctorContract, patientContract, chemistContract } = await getParameters(socket, 'appUser');
 
     socket.on('REQUEST', (req) => {
         switch (req.action) {
@@ -216,7 +219,7 @@ io.on('connection', async (socket) => {
             });
             query(
                 {
-                    contract,
+                    contract: doctorContract,
                     chaincodeId: 'transcrypt',
                     fcn: 'queryAllDoctors',
                     args: [],
@@ -232,7 +235,7 @@ io.on('connection', async (socket) => {
             });
             query(
                 {
-                    contract,
+                    contract: patientContract,
                     chaincodeId: 'transcrypt',
                     fcn: 'queryAllPatients',
                     args: [],

@@ -37,7 +37,7 @@ async function main() {
         // Get the network (channel) our contract is deployed to.
         const network = await gateway.getNetwork('mychannel');
 
-        console.log(network);
+        //console.log(network);
 
         // Get the contract from the network.
         const doctorContract = network.getContract('transcrypt','Doctor');
@@ -47,7 +47,7 @@ async function main() {
         // Evaluate the specified transaction.
         // queryDegreeRecord transaction - requires 1 argument, ex: ('queryDegreeRecord', 'DEGREE5')
         // queryAllDegrees transaction - requires no arguments, ex: ('queryAllDegrees')
-        const result1 = await doctorContract.evaluateTransaction('queryAllDoctors');
+        const result1 = await doctorContract.evaluateTransaction('queryDoctorRecord','DOCTOR1');
         const result2 = await patientContract.evaluateTransaction('queryAllPatients');
         console.log(`Transaction has been evaluated, result for doctors is: ${result1.toString()}`);
         console.log(`Transaction has been evaluated, result for patients is: ${result2.toString()}`);
